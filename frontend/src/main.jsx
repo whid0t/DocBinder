@@ -53,8 +53,6 @@ function Dashboard() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
-  const [patientName, setPatientName] = useState("");
-  const [patientBirthDate, setPatientBirthDate] = useState("");
 
   const refresh = async () => {
     const [reqs, notes] = await Promise.all([
@@ -182,6 +180,8 @@ function Invitation({ token }) {
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
   const [result, setResult] = useState(null);
+  const [patientName, setPatientName] = useState("");
+  const [patientBirthDate, setPatientBirthDate] = useState("");
 
   useEffect(() => {
     api(`/api/invitations/${token}`).then((data) => { setReference(data.request_reference); setStage("verify"); }).catch((err) => { setError(err.message); setStage("error"); });
@@ -193,9 +193,10 @@ function Invitation({ token }) {
       const data = await api(`/api/invitations/${token}/verify`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identity_id: identity }) });
       setVerification(data.verification_token);
       const request = await api(`/api/invitations/${token}/details`, { headers: { "X-Verification-Token": data.verification_token } });
-      setDetails(request); setStage("submit");
-      setPatientName(details.patient_display);
-      setPatientBirthDate(details.patient_birth_date);
+      setDetails(request);
+      setPatientName(request.patient_display);
+      setPatientBirthDate(request.patient_birth_date);
+      setStage("submit");
     } catch (err) { setError(err.message); }
   };
 
@@ -260,4 +261,3 @@ function Invitation({ token }) {
 
 const match = window.location.pathname.match(/^\/invite\/([^/]+)/);
 createRoot(document.getElementById("root")).render(match ? <Invitation token={match[1]} /> : <Dashboard />);
-
