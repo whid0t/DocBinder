@@ -12,6 +12,11 @@ MONTHS = {
 }
 ALLOWED_LOINC = {"6301-6", "14979-9", "777-3", "3255-7"}
 
+# UCUM requires '*' for exponentiation; the documents use '^'.
+UCUM_UNIT_MAP = {
+    "10^9/L": "10*9/L",
+    "10^12/L": "10*12/L",
+}
 
 class ParseError(ValueError):
     pass
@@ -66,7 +71,8 @@ def parse_lab_rows(text: str) -> list[dict[str, object]]:
         rows.append({
             "name": name,
             "value": numeric_result,
-            "unit": unit or "1",
+            "unit": unit,            # original display unit (or "1" if empty)
+            "ucum_code": UCUM_UNIT_MAP.get(unit, unit),   # corrected UCUM code
             "reference": reference,
             "loinc": loinc,
         })
