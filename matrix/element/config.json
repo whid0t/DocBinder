@@ -7,7 +7,7 @@
   },
   "disable_custom_urls": true,
   "disable_guests": true,
-  "brand": "CareBridge Clinical Network",
+  "brand": "DocBinder Clinical Network",
   "default_theme": "light",
   "setting_defaults": {
     "UIFeature.registration": false,

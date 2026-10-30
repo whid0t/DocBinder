@@ -1,5 +1,5 @@
 public_baseurl: "http://localhost:8008/"
 enable_registration: false
-registration_shared_secret: "carebridge-local-registration-only"
+registration_shared_secret: "docbinder-local-registration-only"
 report_stats: false
 

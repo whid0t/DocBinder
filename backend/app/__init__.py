@@ -1,2 +1,2 @@
-"""CareBridge backend."""
+"""DocBinder backend."""
 

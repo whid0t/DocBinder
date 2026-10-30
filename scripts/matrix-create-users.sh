@@ -23,5 +23,5 @@ create_user() {
 }
 
 create_user "lena.hofer" "$DOCTOR_MATRIX_PASSWORD"
-create_user "carebridge" "$BOT_MATRIX_PASSWORD"
+create_user "docbinder" "$BOT_MATRIX_PASSWORD"
 

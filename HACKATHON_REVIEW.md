@@ -1,4 +1,4 @@
-# CareBridge hackathon review
+# DocBinder hackathon review
 
 **Most of the intended workflow is implemented, but the project has not yet fulfilled all requirements.** The largest jury risks are the missing privacy boundary, weak simulated identity boundary, support limited to predefined recipients, incorrect document classification, unreliable notifications, and missing metric evidence.
 
@@ -38,7 +38,7 @@ This report combines the Codex review and the supplied Claude review. It priorit
 
    Maria is hardcoded in the ordinary workflow. Supporting arbitrary patients would improve reuse, but the explicit jury requirement concerns other outside people and documents, including wrong-patient documents; do not confuse these scopes.
 
-   **Fix:** support arbitrary synthetic recipients and explain how verified identity attributes are matched to the intended named person without assuming a pre-existing directory. See [workflow.py](matrix-bot/carebridge_bot/workflow.py).
+   **Fix:** support arbitrary synthetic recipients and explain how verified identity attributes are matched to the intended named person without assuming a pre-existing directory. See [workflow.py](matrix-bot/docbinder_bot/workflow.py).
 
 4. **High: ordinary wording can produce the wrong FHIR resource type.**
 
@@ -64,7 +64,7 @@ This report combines the Codex review and the supplied Claude review. It priorit
 
    The bot also discards the return value from `room_send`, so delivery acknowledgment is not tied to checking a successful Matrix response. The portal claims the doctor was notified immediately after queuing.
 
-   **Fix:** require or resolve a destination room, check send results, retain failed notifications for retry, and distinguish queued from delivered. See [notifications.py](backend/app/notifications.py), [bot](matrix-bot/carebridge_bot/__main__.py), and [portal](frontend/src/main.jsx).
+   **Fix:** require or resolve a destination room, check send results, retain failed notifications for retry, and distinguish queued from delivered. See [notifications.py](backend/app/notifications.py), [bot](matrix-bot/docbinder_bot/__main__.py), and [portal](frontend/src/main.jsx).
 
 7. **High: required metric results are missing.**
 

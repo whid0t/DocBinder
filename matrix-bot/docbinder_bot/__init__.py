@@ -1,0 +1,2 @@
+"""DocBinder Matrix bot."""
+

@@ -4,7 +4,7 @@ import base64
 from datetime import datetime, timezone
 import uuid
 
-from .parser import parse_author, parse_lab_rows
+from .parser import parse_author, parse_lab_rows, parse_lab_timestamps
 
 
 def _now() -> str:
@@ -16,8 +16,15 @@ def build_lab_resources(
 ) -> list[dict]:
     resources: list[dict] = []
     targets: list[dict] = []
+    effective, issued = parse_lab_timestamps(text)
+    validator = parse_author(text, "Validated by")
     for row in parse_lab_rows(text):
         resource_id = str(uuid.uuid4())
+        notes = [{"text": f"Reference range: {row['reference']}"}]
+        if row.get("normalized"):
+            notes.append({
+                "text": f"Source value: {row['raw_value']} {row['raw_unit']}; normalized deterministically for comparison."
+            })
         observation = {
             "resourceType": "Observation",
             "id": resource_id,
@@ -33,17 +40,22 @@ def build_lab_resources(
                 "display": row["name"],
             }], "text": row["name"]},
             "subject": {"reference": f"Patient/{patient_id}"},
+            "effectiveDateTime": effective,
             "valueQuantity": {
                 "value": row["value"],
                 "unit": row["unit"],               # display
                 "system": "http://unitsofmeasure.org",
                 "code": row.get("ucum_code", row["unit"]),   # UCUM code
             },
-            "note": [{"text": f"Reference range: {row['reference']}"}],
+            "note": notes,
         }
+        if issued:
+            observation["issued"] = issued
+        if validator:
+            observation["performer"] = [{"display": validator}]
         resources.append(observation)
         targets.append({"reference": f"Observation/{resource_id}"})
-    resources.append(_provenance(targets, submitter_name, identity_id, parse_author(text, "Validated by")))
+    resources.append(_provenance(targets, submitter_name, identity_id, validator))
     return resources
 
 
@@ -84,8 +96,13 @@ def _provenance(targets: list[dict], submitter: str, identity_id: str, author: s
             "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
             "code": "enterer",
         }]},
-        "who": {"display": submitter},
-        "onBehalfOf": {"display": f"Identity verified using simulated ID Austria ({identity_id})"},
+        "who": {
+            "display": submitter,
+            "identifier": {
+                "system": "urn:docbinder:simulated-name-match",
+                "value": identity_id,
+            },
+        },
     }]
     if author:
         agents.append({
@@ -100,6 +117,7 @@ def _provenance(targets: list[dict], submitter: str, identity_id: str, author: s
         "id": str(uuid.uuid4()),
         "target": targets,
         "recorded": _now(),
+        "policy": ["urn:docbinder:identity:simulated-name-match"],
         "activity": {"coding": [{
             "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
             "code": "CREATE",

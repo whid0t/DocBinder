@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+import shutil
 import sqlite3
 from typing import Any, Iterator
 
@@ -22,11 +23,13 @@ CREATE TABLE IF NOT EXISTS requests (
   patient_phone TEXT,
   recipient_name TEXT NOT NULL,
   recipient_role TEXT NOT NULL,
-  expected_identity_id TEXT NOT NULL,
+  expected_identity_id TEXT,
   channel TEXT NOT NULL CHECK(channel IN ('email','sms')),
   contact TEXT NOT NULL,
   document_type TEXT NOT NULL,
+  document_type_code TEXT,
   legal_basis TEXT NOT NULL,
+  purpose_or_legal_basis TEXT,
   reason TEXT NOT NULL,
   status TEXT NOT NULL,
   created_at TEXT NOT NULL,
@@ -49,6 +52,8 @@ CREATE TABLE IF NOT EXISTS verification_sessions (
 CREATE TABLE IF NOT EXISTS submissions (
   id TEXT PRIMARY KEY,
   request_id TEXT NOT NULL REFERENCES requests(id),
+  batch_id TEXT,
+  filename TEXT,
   submitter_identity TEXT NOT NULL,
   original_text TEXT NOT NULL,
   content_hash TEXT NOT NULL,
@@ -59,9 +64,11 @@ CREATE TABLE IF NOT EXISTS submissions (
 CREATE TABLE IF NOT EXISTS fhir_resources (
   id TEXT PRIMARY KEY,
   request_id TEXT NOT NULL REFERENCES requests(id),
+  submission_id TEXT,
   resource_type TEXT NOT NULL,
   resource_json TEXT NOT NULL,
   stored_remotely INTEGER NOT NULL DEFAULT 0,
+  remote_url TEXT,
   created_at TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS audit_events (
@@ -99,6 +106,9 @@ def utc_now() -> str:
 def connection() -> Iterator[sqlite3.Connection]:
     path = Path(settings.database_path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    legacy_path = path.with_name("carebridge.db")
+    if not path.exists() and legacy_path.exists():
+        shutil.copy2(legacy_path, path)
     db = sqlite3.connect(path, timeout=10)
     db.row_factory = sqlite3.Row
     db.execute("PRAGMA foreign_keys = ON")
@@ -115,6 +125,46 @@ def connection() -> Iterator[sqlite3.Connection]:
 def init_db() -> None:
     with connection() as db:
         db.executescript(SCHEMA)
+        _add_missing_columns(db, "requests", {
+            "document_type_code": "TEXT",
+            "purpose_or_legal_basis": "TEXT",
+        })
+        _add_missing_columns(db, "submissions", {
+            "batch_id": "TEXT",
+            "filename": "TEXT",
+        })
+        _add_missing_columns(db, "fhir_resources", {
+            "submission_id": "TEXT",
+            "remote_url": "TEXT",
+        })
+        db.execute(
+            "UPDATE notifications SET body=replace(body, 'CareBridge', 'DocBinder'), "
+            "subject=replace(subject, 'CareBridge', 'DocBinder')"
+        )
+        db.execute(
+            """UPDATE notifications
+            SET body=? || request_id || ?
+            WHERE audience='patient' AND channel='sms'""",
+            (
+                f"{settings.clinic_name} ({settings.doctor_name}) initiated healthcare document request ",
+                ". REPLY WITH 1 TO ACCEPT, 0 TO DECLINE. If an answer is NOT RECEIVED in 6 hours, "
+                "you will receive a call to confirm.",
+            ),
+        )
+        db.execute(
+            "UPDATE fhir_resources SET remote_url=replace(remote_url, ?, ?) "
+            "WHERE remote_url LIKE ?",
+            (settings.fhir_base_url, settings.fhir_public_url, f"{settings.fhir_base_url}%"),
+        )
+
+
+def _add_missing_columns(
+    db: sqlite3.Connection, table: str, columns: dict[str, str]
+) -> None:
+    existing = {row[1] for row in db.execute(f"PRAGMA table_info({table})")}
+    for name, definition in columns.items():
+        if name not in existing:
+            db.execute(f"ALTER TABLE {table} ADD COLUMN {name} {definition}")
 
 
 def row_dict(row: sqlite3.Row | None) -> dict[str, Any] | None:

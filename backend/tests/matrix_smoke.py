@@ -3,28 +3,29 @@
 import time
 from urllib.parse import quote
 import uuid
+import os
 
 import httpx
 
 
 BASE = "http://synapse:8008/_matrix/client/v3"
 DOCTOR = "@lena.hofer:klinikum.example"
-BOT = "@carebridge:klinikum.example"
+BOT = "@docbinder:klinikum.example"
 
 
 def main() -> None:
     login = httpx.post(f"{BASE}/login", json={
         "type": "m.login.password",
         "identifier": {"type": "m.id.user", "user": DOCTOR},
-        "password": "carebridge-doctor-demo",
-        "initial_device_display_name": "CareBridge smoke test",
+        "password": os.getenv("DOCTOR_MATRIX_PASSWORD", "docbinder-doctor-demo"),
+        "initial_device_display_name": "DocBinder smoke test",
     }, timeout=15)
     login.raise_for_status()
     token = login.json()["access_token"]
     headers = {"Authorization": f"Bearer {token}"}
 
     created = httpx.post(f"{BASE}/createRoom", headers=headers, json={
-        "name": "CareBridge Demo",
+        "name": "DocBinder Demo",
         "topic": "Secure external clinical document requests",
         "preset": "private_chat",
         "invite": [BOT],
@@ -54,7 +55,7 @@ def main() -> None:
         payload = synced.json()
         since = payload["next_batch"]
         events = payload.get("rooms", {}).get("join", {}).get(room_id, {}).get("timeline", {}).get("events", [])
-        if any(event.get("sender") == BOT and "CareBridge commands" in event.get("content", {}).get("body", "") for event in events):
+        if any(event.get("sender") == BOT and "DocBinder request format" in event.get("content", {}).get("body", "") for event in events):
             print(f"OK: bot joined and replied in {room_id}")
             return
     raise RuntimeError("The bot did not reply to !help")

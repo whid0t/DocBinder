@@ -7,14 +7,14 @@ import re
 import time
 
 import httpx
-from nio import AsyncClient, AsyncClientConfig, InviteMemberEvent, MatrixRoom, RoomMessageText
+from nio import AsyncClient, AsyncClientConfig, InviteMemberEvent, MatrixRoom, RoomMessageText, RoomSendResponse
 
 from .store import ConversationStore
-from .workflow import advance, backend_payload, first_prompt
+from .workflow import backend_payload, help_text, parse_request_block
 
 
 HOMESERVER = os.getenv("MATRIX_HOMESERVER", "http://synapse:8008")
-USER_ID = os.getenv("MATRIX_USER_ID", "@carebridge:klinikum.example")
+USER_ID = os.getenv("MATRIX_USER_ID", "@docbinder:klinikum.example")
 PASSWORD = os.environ["MATRIX_PASSWORD"]
 BACKEND = os.getenv("BACKEND_URL", "http://backend:8000")
 ALLOWED = {item.strip() for item in os.getenv(
@@ -24,26 +24,25 @@ STARTED_MS = int(time.time() * 1000)
 store = ConversationStore()
 
 
-class CareBridgeBot:
+class DocBinderBot:
     def __init__(self):
         config = AsyncClientConfig(store_sync_tokens=True)
         self.client = AsyncClient(HOMESERVER, USER_ID, store_path="/data/nio", config=config)
 
-    async def send(self, room_id: str, text: str) -> None:
-        formatted = escape(text)
+    async def send(self, room_id: str, message: str) -> bool:
+        formatted = escape(message)
         formatted = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", formatted)
         formatted = re.sub(r"`(.+?)`", r"<code>\1</code>", formatted)
         formatted = formatted.replace("\n", "<br>")
-        await self.client.room_send(
+        response = await self.client.room_send(
             room_id=room_id,
             message_type="m.room.message",
             content={
-                "msgtype": "m.text",
-                "body": text,
-                "format": "org.matrix.custom.html",
-                "formatted_body": formatted,
+                "msgtype": "m.text", "body": message,
+                "format": "org.matrix.custom.html", "formatted_body": formatted,
             },
         )
+        return isinstance(response, RoomSendResponse)
 
     async def invite(self, room: MatrixRoom, event: InviteMemberEvent) -> None:
         if event.sender in ALLOWED:
@@ -52,27 +51,27 @@ class CareBridgeBot:
     async def message(self, room: MatrixRoom, event: RoomMessageText) -> None:
         if event.sender == USER_ID or event.server_timestamp < STARTED_MS - 5_000:
             return
-        text = event.body.strip()
+        message = event.body.strip()
         if event.sender not in ALLOWED:
-            if text.startswith("!") or text.startswith("/request-document"):
-                await self.send(room.room_id, "You are not authorized to create CareBridge requests.")
+            if message.startswith("!") or message.startswith("/request-document"):
+                await self.send(room.room_id, "You are not authorized to create DocBinder requests.")
             return
-        if text in {"!help", "/help"}:
-            await self.send(room.room_id, "CareBridge commands:\n!request-document — create a request\n!requests — list recent requests\n!cancel — cancel the current conversation\n!revoke <ID> — revoke a request")
+        if message in {"!help", "/help"}:
+            await self.send(room.room_id, help_text())
             return
-        if text in {"!request-document", "/request-document"}:
-            store.save(room.room_id, event.sender, "recipient", {})
-            await self.send(room.room_id, first_prompt())
+        if message in {"!request-document", "/request-document"}:
+            store.save(room.room_id, event.sender, "awaiting_block", {})
+            await self.send(room.room_id, help_text())
             return
-        if text == "!cancel":
+        if message == "!cancel":
             store.clear(room.room_id, event.sender)
             await self.send(room.room_id, "Request creation cancelled.")
             return
-        if text == "!requests":
+        if message == "!requests":
             await self.list_requests(room.room_id)
             return
-        if text.startswith("!revoke "):
-            await self.revoke(room.room_id, text.split(maxsplit=1)[1])
+        if message.startswith("!revoke "):
+            await self.revoke(room.room_id, message.split(maxsplit=1)[1])
             return
 
         state = store.get(room.room_id, event.sender)
@@ -80,18 +79,19 @@ class CareBridgeBot:
             return
         step, data = state
         if step == "confirm":
-            if text.casefold() != "confirm":
-                await self.send(room.room_id, "Reply **confirm** to send, or `!cancel`.")
+            if message.casefold() != "confirm":
+                await self.send(room.room_id, "Reply **confirm** to create the request, or `!cancel`.")
                 return
             await self.confirm(room.room_id, event.sender, data)
             return
-        next_step, next_data, prompt = advance(step, text, data)
-        store.save(room.room_id, event.sender, next_step, next_data)
-        await self.send(room.room_id, prompt)
+        parsed, response = parse_request_block(message)
+        if parsed is not None:
+            store.save(room.room_id, event.sender, "confirm", parsed)
+        await self.send(room.room_id, response)
 
     async def confirm(self, room_id: str, user_id: str, data: dict) -> None:
         try:
-            async with httpx.AsyncClient(timeout=10) as http:
+            async with httpx.AsyncClient(timeout=15) as http:
                 response = await http.post(f"{BACKEND}/api/requests", json=backend_payload(room_id, user_id, data))
                 response.raise_for_status()
                 created = response.json()
@@ -99,7 +99,7 @@ class CareBridgeBot:
             warning = "\n" + "\n".join(f"⚠️ {item}" for item in created.get("warnings", [])) if created.get("warnings") else ""
             await self.send(room_id, f"✅ Request **{created['id']}** was created and the privacy-safe invitation was sent.{warning}")
         except httpx.HTTPError as exc:
-            await self.send(room_id, f"CareBridge could not create the request. Please retry. ({type(exc).__name__})")
+            await self.send(room_id, f"DocBinder could not create the request. Please retry. ({type(exc).__name__})")
 
     async def list_requests(self, room_id: str) -> None:
         try:
@@ -108,13 +108,13 @@ class CareBridgeBot:
                 response.raise_for_status()
                 requests = response.json()
             if not requests:
-                await self.send(room_id, "No CareBridge requests yet.")
+                await self.send(room_id, "No DocBinder requests yet.")
                 return
-            lines = ["**Recent CareBridge requests**"]
+            lines = ["**Recent DocBinder requests**"]
             lines += [f"- {item['id']} — {item['recipient_name']} — {item['status']}" for item in requests]
             await self.send(room_id, "\n".join(lines))
         except httpx.HTTPError:
-            await self.send(room_id, "Could not load requests from CareBridge.")
+            await self.send(room_id, "Could not load requests from DocBinder.")
 
     async def revoke(self, room_id: str, request_id: str) -> None:
         try:
@@ -134,16 +134,16 @@ class CareBridgeBot:
                     response.raise_for_status()
                     for item in response.json():
                         destination = item["destination"]
-                        if destination.startswith("!"):
-                            await self.send(destination, item["body"])
-                            await http.post(f"{BACKEND}/api/internal/matrix-notifications/{item['id']}/delivered")
+                        if destination.startswith("!") and await self.send(destination, item["body"]):
+                            delivered = await http.post(f"{BACKEND}/api/internal/matrix-notifications/{item['id']}/delivered")
+                            delivered.raise_for_status()
             except (httpx.HTTPError, OSError):
                 pass
             await asyncio.sleep(5)
 
     async def run(self) -> None:
         while True:
-            login = await self.client.login(PASSWORD, device_name="CareBridge Bot")
+            login = await self.client.login(PASSWORD, device_name="DocBinder Bot")
             if getattr(login, "access_token", None):
                 break
             print("Matrix login is not ready; retrying in 10 seconds.", flush=True)
@@ -159,5 +159,4 @@ class CareBridgeBot:
 
 
 if __name__ == "__main__":
-    asyncio.run(CareBridgeBot().run())
-
+    asyncio.run(DocBinderBot().run())

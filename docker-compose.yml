@@ -4,14 +4,17 @@ services:
       context: .
       dockerfile: backend/Dockerfile
     environment:
-      DATABASE_PATH: /data/carebridge.db
+      DATABASE_PATH: /data/docbinder.db
       PUBLIC_BASE_URL: http://localhost:3000
       MAIL_HOST: mailpit
       MAIL_PORT: "1025"
       FHIR_BASE_URL: http://hapi-fhir:8080/fhir
+      FHIR_PUBLIC_URL: http://localhost:8081/fhir
       CORS_ORIGINS: http://localhost:3000
+      INTERNAL_PUBLIC_URL: http://localhost:3000
+      DOCTOR_MATRIX_PASSWORD: ${DOCTOR_MATRIX_PASSWORD:-docbinder-doctor-demo}
     volumes:
-      - carebridge-data:/data
+      - docbinder-data:/data
     ports:
       - "8000:8000"
     depends_on:
@@ -74,19 +77,21 @@ services:
       dockerfile: matrix-bot/Dockerfile
     environment:
       MATRIX_HOMESERVER: http://synapse:8008
-      MATRIX_USER_ID: "@carebridge:klinikum.example"
-      MATRIX_PASSWORD: ${BOT_MATRIX_PASSWORD:-carebridge-bot-demo}
+      MATRIX_USER_ID: "@docbinder:klinikum.example"
+      MATRIX_PASSWORD: ${BOT_MATRIX_PASSWORD:-docbinder-bot-demo}
       ALLOWED_MATRIX_USERS: "@lena.hofer:klinikum.example"
       BACKEND_URL: http://backend:8000
       BOT_DATABASE_PATH: /data/bot.db
     volumes:
-      - matrix-bot-data:/data
+      - docbinder-bot-data:/data
     depends_on:
       - synapse
       - backend
     restart: unless-stopped
 
 volumes:
-  carebridge-data:
-  matrix-bot-data:
+  # Reuse the pre-rename database volume; the backend copies carebridge.db once.
+  docbinder-data:
+    name: track-2-interoperability_carebridge-data
+  docbinder-bot-data:
 

@@ -13,11 +13,11 @@ def create() -> tuple[str, str]:
     response = httpx.post(f"{BASE}/api/requests", json={
         "recipient_name": "Dr. Eva Brandl",
         "recipient_role": "Lab physician",
-        "expected_identity_id": "AT-EID-EVA-BRANDL",
+        "patient_name": "Maria Beispiel",
         "channel": "email",
         "contact": "eva.brandl@labor-kanal.example",
-        "document_type": "Laboratory result",
-        "legal_basis": "necessary_for_treatment",
+        "document_type_code": "laboratory_results",
+        "purpose_or_legal_basis": "necessary for treatment",
         "reason": "Integration smoke test",
     }, timeout=10)
     response.raise_for_status()
@@ -30,7 +30,7 @@ def verify(token: str) -> str:
     opened.raise_for_status()
     checked = httpx.post(
         f"{BASE}/api/invitations/{token}/verify",
-        json={"identity_id": "AT-EID-EVA-BRANDL"},
+        json={"full_name": "Eva Brandl"},
         timeout=10,
     )
     checked.raise_for_status()
@@ -51,14 +51,36 @@ def submit(token: str, verification: str, document: str) -> httpx.Response:
     )
 
 
+def submit_longitudinal_batch(token: str, verification: str) -> httpx.Response:
+    first = Path("/scenario/documents/lab-result-maria-beispiel.md").read_text()
+    second = first.replace("22 October 2026", "29 October 2026").replace(
+        "| INR (prothrombin time) | 1.0 |", "| INR (prothrombin time) | 1.1 |"
+    )
+    return httpx.post(
+        f"{BASE}/api/invitations/{token}/submit",
+        headers={"X-Verification-Token": verification},
+        data={"patient_name": "Maria Beispiel", "patient_birth_date": "1961-03-12"},
+        files=[
+            ("files", ("lab-day-x.md", first, "text/markdown")),
+            ("files", ("lab-day-y.md", second, "text/markdown")),
+        ],
+        timeout=40,
+    )
+
+
 def main() -> None:
     good_id, good_token = create()
-    filed = submit(good_token, verify(good_token), "lab-result-maria-beispiel.md")
+    filed = submit_longitudinal_batch(good_token, verify(good_token))
     filed.raise_for_status()
-    assert filed.json()["resources"] == 5
+    assert filed.json()["documents"] == 2
+    assert filed.json()["resources"] == 10
     fhir = httpx.get(f"{BASE}/api/requests/{good_id}/fhir", timeout=10)
     fhir.raise_for_status()
-    assert len(fhir.json()) == 5
+    assert len(fhir.json()) == 10
+    summary = httpx.get(f"{BASE}/api/requests/{good_id}/summary", timeout=10)
+    summary.raise_for_status()
+    inr = next(group for group in summary.json()["groups"] if group["loinc"] == "6301-6")
+    assert [reading["value"] for reading in inr["readings"]] == [1.0, 1.1]
 
     wrong_id, wrong_token = create()
     rejected = submit(wrong_token, verify(wrong_token), "lab-result-max-beispiel.md")
