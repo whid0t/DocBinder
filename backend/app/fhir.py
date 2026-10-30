@@ -35,9 +35,9 @@ def build_lab_resources(
             "subject": {"reference": f"Patient/{patient_id}"},
             "valueQuantity": {
                 "value": row["value"],
-                "unit": row["unit"],
+                "unit": row["unit"],               # display
                 "system": "http://unitsofmeasure.org",
-                "code": row["unit"],
+                "code": row.get("ucum_code", row["unit"]),   # UCUM code
             },
             "note": [{"text": f"Reference range: {row['reference']}"}],
         }
