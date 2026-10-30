@@ -1,0 +1,89 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      DATABASE_PATH: /data/carebridge.db
+      PUBLIC_BASE_URL: http://localhost:3000
+      MAIL_HOST: mailpit
+      MAIL_PORT: "1025"
+      FHIR_BASE_URL: http://hapi-fhir:8080/fhir
+      CORS_ORIGINS: http://localhost:3000
+    volumes:
+      - carebridge-data:/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mailpit
+      - hapi-fhir
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    restart: unless-stopped
+
+  hapi-fhir:
+    image: hapiproject/hapi:latest
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
+
+  synapse:
+    image: ${SYNAPSE_IMAGE:-matrixdotorg/synapse:latest}
+    command:
+      - run
+      - --config-path=/data/homeserver.yaml
+      - --config-path=/config/local.yaml
+    volumes:
+      - ./matrix/synapse/data:/data
+      - ./matrix/synapse/local.yaml:/config/local.yaml:ro
+    ports:
+      - "8008:8008"
+    restart: unless-stopped
+
+  element:
+    image: ${ELEMENT_IMAGE:-vectorim/element-web:latest}
+    volumes:
+      - ./matrix/element/config.json:/app/config.json:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - synapse
+    restart: unless-stopped
+
+  matrix-bot:
+    build:
+      context: .
+      dockerfile: matrix-bot/Dockerfile
+    environment:
+      MATRIX_HOMESERVER: http://synapse:8008
+      MATRIX_USER_ID: "@carebridge:klinikum.example"
+      MATRIX_PASSWORD: ${BOT_MATRIX_PASSWORD:-carebridge-bot-demo}
+      ALLOWED_MATRIX_USERS: "@lena.hofer:klinikum.example"
+      BACKEND_URL: http://backend:8000
+      BOT_DATABASE_PATH: /data/bot.db
+    volumes:
+      - matrix-bot-data:/data
+    depends_on:
+      - synapse
+      - backend
+    restart: unless-stopped
+
+volumes:
+  carebridge-data:
+  matrix-bot-data:
+
