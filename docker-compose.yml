@@ -48,6 +48,9 @@ services:
       - run
       - --config-path=/data/homeserver.yaml
       - --config-path=/config/local.yaml
+    environment:
+      UID: ${SYNAPSE_UID:-1000}
+      GID: ${SYNAPSE_GID:-1000}
     volumes:
       - ./matrix/synapse/data:/data
       - ./matrix/synapse/local.yaml:/config/local.yaml:ro
