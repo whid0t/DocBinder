@@ -1,0 +1,32 @@
+{
+ "resourceType": "DocumentReference",
+ "id": "732a10a7-dfca-438c-9d6c-b9963ace56e6",
+ "status": "current",
+ "type": {
+  "coding": [
+   {
+    "system": "http://loinc.org",
+    "code": "18842-5",
+    "display": "Discharge summary"
+   }
+  ]
+ },
+ "subject": {
+  "reference": "Patient/maria-beispiel"
+ },
+ "date": "2026-10-30T12:28:28+00:00",
+ "author": [
+  {
+   "display": "Dr. Johanna Leitner, medical director, Reha Waldblick"
+  }
+ ],
+ "content": [
+  {
+   "attachment": {
+    "contentType": "text/markdown",
+    "data": "IyBSZWhhIFdhbGRibGljazogZGlzY2hhcmdlIHJlcG9ydAoKUGF0aWVudDogTWFyaWEgQmVpc3BpZWwsIGJvcm4gMTIgTWFyY2ggMTk2MQpTdGF5OiAyIHRvIDIzIFNlcHRlbWJlciAyMDI2ClJlYXNvbjogcmVoYWJpbGl0YXRpb24gYWZ0ZXIgYSB0b3RhbCBoaXAgcmVwbGFjZW1lbnQgb24gdGhlIGxlZnQsIG9uIDE4IEF1Z3VzdCAyMDI2IGF0IEtsaW5pa3VtIEJlaXNwaWVsc3RhZHQKCiMjIENvdXJzZQoKT24gYXJyaXZhbCwgTWFyaWEgd2Fsa2VkIHdpdGggdHdvIGNydXRjaGVzLiBBZnRlciB0aHJlZSB3ZWVrcyBvZiBwaHlzaW90aGVyYXB5IHNoZSB3YWxrcyB1cCB0byA1MDAgbWV0cmVzIHdpdGhvdXQgYWlkcyBhbmQgY2xpbWJzIHN0YWlycyB3aXRoIGEgaGFuZHJhaWwuIFRoZSB3b3VuZCBoZWFsZWQgd2l0aG91dCBwcm9ibGVtcy4gVGhlcmUgd2VyZSBubyBmYWxscy4KCiMjIE1lZGljYXRpb24gYXQgZGlzY2hhcmdlCgotIFJpdmFyb3hhYmFuIDEwIG1nIG9uY2UgYSBkYXkgdW50aWwgMjkgU2VwdGVtYmVyIDIwMjYsIHRvIHByZXZlbnQgdGhyb21ib3NpcyBmb3Igc2l4IHdlZWtzIGFmdGVyIHRoZSBvcGVyYXRpb24KLSBQYXJhY2V0YW1vbCA1MDAgbWcgdXAgdG8gdGhyZWUgdGltZXMgYSBkYXkgaWYgbmVlZGVkCi0gUGFudG9wcmF6b2xlIDIwIG1nIG9uY2UgYSBkYXkKCiMjIFJlY29tbWVuZGF0aW9ucwoKLSBDb250aW51ZSB0aGUgaG9tZSBleGVyY2lzZXMuCi0gT3V0cGF0aWVudCBwaHlzaW90aGVyYXB5IHR3aWNlIGEgd2VlayBmb3Igc2l4IHdlZWtzLgotIEZvbGxvdy11cCBYLXJheSBhdCBLbGluaWt1bSBCZWlzcGllbHN0YWR0IGluIE5vdmVtYmVyIDIwMjYuCgpXcml0dGVuIGJ5OiBEci4gSm9oYW5uYSBMZWl0bmVyLCBtZWRpY2FsIGRpcmVjdG9yLCBSZWhhIFdhbGRibGljawpTZW50IGJ5OiBTdGVmYW4gS2VybiwgZGlzY2hhcmdlIG1hbmFnZW1lbnQ=",
+    "title": "Rehabilitation discharge report"
+   }
+  }
+ ]
+}

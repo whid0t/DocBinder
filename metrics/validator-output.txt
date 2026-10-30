@@ -1,0 +1,82 @@
+FHIR Validation tool Version 7.0.3 (Git# 28e9fac6d79d). Built 2026-10-21T16:46:58.228Z (8 days old)
+  Java:   17.0.17 from /usr/lib/jvm/jdk-17.0.17-oracle-x64 on amd64 (64bit). 1948MB available
+  Paths:  Current = /tmp/claude-1000/-home-desi-CareBridge/547afbf1-efb7-481c-a8d1-052afe84cebb/scratchpad, Package Cache = /home/desi/.fhir/packages
+  Params: /home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-DocumentReference-732a10a7.json /home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-Provenance-8806adcd.json /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-354dab90.json /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c28d01c3.json /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c7cbdad7.json /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-ebc0605a.json /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Provenance-f20de9c0.json /home/desi/CareBridge/metrics/fhir/Patient-maria-beispiel.json -version 4.0
+  Locale: /
+  Jurisdiction: None specified (locale = )
+  Note that exceptions and validation failures may happen in the absence of a locale
+Loading
+  Loading FHIR v4.0 from hl7.fhir.r4.core#4.0.1
+  Load hl7.terminology.r4#6.2.0 - 4288 resources (00:05.617)
+  Load hl7.fhir.uv.extensions.r4#5.2.0 - 759 resources (00:00.807)
+  Loaded FHIR - 8265 resources (00:00.000)
+  Terminology Cache at /tmp/default-tx-cache/r4
+  Terminology server https://tx.fhir.org - Version Connected to Terminology Server at https://tx.fhir.org (00:01.185)
+  Load hl7.terminology#7.5.0 - 4190 resources (00:00.966)
+  Load hl7.terminology.r5#7.5.0 - 4190 resources (00:00.491)
+  Load hl7.fhir.uv.extensions#5.4.0 - 885 resources (00:00.609)
+  Package Summary: [hl7.fhir.r4.core#4.0.1, hl7.fhir.xver-extensions#0.1.0, hl7.terminology.r4#6.2.0, hl7.fhir.uv.extensions.r4#5.2.0, hl7.terminology#7.5.0, hl7.terminology.r5#7.5.0, hl7.fhir.uv.extensions#5.4.0]
+  Get set... 
+  ...go! (00:00.923)
+Cached new session. Cache size = 1
+Sources to validate: /home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-DocumentReference-732a10a7.json/home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-Provenance-8806adcd.json/home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-354dab90.json/home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c28d01c3.json/home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c7cbdad7.json/home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-ebc0605a.json/home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Provenance-f20de9c0.json/home/desi/CareBridge/metrics/fhir/Patient-maria-beispiel.json
+Validating
+  Validate /home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-DocumentReference-732a10a7.json
+ 00:00.154
+  Validate /home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-Provenance-8806adcd.json
+ 00:00.128
+  Validate /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-354dab90.json
+ 00:00.196
+  Validate /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c28d01c3.json
+ 00:00.163
+  Validate /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c7cbdad7.json
+ 00:00.169
+  Validate /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-ebc0605a.json
+ 00:00.206
+  Validate /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Provenance-f20de9c0.json
+ 00:00.025
+  Validate /home/desi/CareBridge/metrics/fhir/Patient-maria-beispiel.json
+ 00:00.023
+Done. Times: Loading: 00:10.661, validation: 00:01.070 (#8). Memory = 410Mb
+
+-- /home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-DocumentReference-732a10a7.json --------------------------------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ DocumentReference (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- /home/desi/CareBridge/metrics/fhir/DBR-20261030-63C4-Provenance-8806adcd.json -------------------------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ Provenance (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-354dab90.json --------------------------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ Observation (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c28d01c3.json --------------------------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ Observation (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-c7cbdad7.json --------------------------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ Observation (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Observation-ebc0605a.json --------------------------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ Observation (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- /home/desi/CareBridge/metrics/fhir/DBR-20261030-FEEC-Provenance-f20de9c0.json -------------------------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ Provenance (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- /home/desi/CareBridge/metrics/fhir/Patient-maria-beispiel.json ----------------------------------------------------------------------
+Success: 0 errors, 1 warnings, 0 notes
+  Warning @ Patient (line 1, col2): Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation), validating against Base FHIR Standard
+----------------------------------------------------------------------------------------------------------------------------------------
+
+Done. Times: Loading: 00:10.661, validation: 00:01.070 (#8). Max Memory = 1Gb

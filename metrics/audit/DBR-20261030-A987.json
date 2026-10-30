@@ -1,0 +1,80 @@
+[
+ {
+  "id": 73,
+  "request_id": "DBR-20261030-A987",
+  "event_type": "request_confirmed",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{\"purpose_or_legal_basis\": \"necessary for treatment\", \"reason\": \"Latest blood clotting results before a planned procedure\"}",
+  "created_at": "2026-10-30T12:28:34+00:00",
+  "details": {
+   "purpose_or_legal_basis": "necessary for treatment",
+   "reason": "Latest blood clotting results before a planned procedure"
+  }
+ },
+ {
+  "id": 74,
+  "request_id": "DBR-20261030-A987",
+  "event_type": "patient_matched",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:34+00:00",
+  "details": {}
+ },
+ {
+  "id": 75,
+  "request_id": "DBR-20261030-A987",
+  "event_type": "request_sent",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{\"channel\": \"email\", \"recipient\": \"Dr. Eva Brandl\"}",
+  "created_at": "2026-10-30T12:28:34+00:00",
+  "details": {
+   "channel": "email",
+   "recipient": "Dr. Eva Brandl"
+  }
+ },
+ {
+  "id": 76,
+  "request_id": "DBR-20261030-A987",
+  "event_type": "patient_notified",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:34+00:00",
+  "details": {}
+ },
+ {
+  "id": 77,
+  "request_id": "DBR-20261030-A987",
+  "event_type": "identity_checked",
+  "actor_id": "hans fremder",
+  "outcome": "failure",
+  "details_json": "{\"attempt\": 1}",
+  "created_at": "2026-10-30T12:28:35+00:00",
+  "details": {
+   "attempt": 1
+  }
+ },
+ {
+  "id": 78,
+  "request_id": "DBR-20261030-A987",
+  "event_type": "misdelivery_caught",
+  "actor_id": "hans fremder",
+  "outcome": "blocked",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:35+00:00",
+  "details": {}
+ },
+ {
+  "id": 79,
+  "request_id": "DBR-20261030-A987",
+  "event_type": "identity_checked",
+  "actor_id": "eva brandl",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:35+00:00",
+  "details": {}
+ }
+]

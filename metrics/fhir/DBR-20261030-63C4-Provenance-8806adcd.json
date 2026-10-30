@@ -1,0 +1,53 @@
+{
+ "resourceType": "Provenance",
+ "id": "8806adcd-2554-4040-896f-bc2fbfc525ed",
+ "target": [
+  {
+   "reference": "DocumentReference/732a10a7-dfca-438c-9d6c-b9963ace56e6"
+  }
+ ],
+ "recorded": "2026-10-30T12:28:28+00:00",
+ "policy": [
+  "urn:docbinder:identity:simulated-name-match"
+ ],
+ "activity": {
+  "coding": [
+   {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+    "code": "CREATE"
+   }
+  ]
+ },
+ "agent": [
+  {
+   "type": {
+    "coding": [
+     {
+      "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+      "code": "enterer"
+     }
+    ]
+   },
+   "who": {
+    "identifier": {
+     "system": "urn:docbinder:simulated-name-match",
+     "value": "stefan kern"
+    },
+    "display": "Stefan Kern"
+   }
+  },
+  {
+   "type": {
+    "coding": [
+     {
+      "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+      "code": "author"
+     }
+    ]
+   },
+   "who": {
+    "display": "Dr. Johanna Leitner, medical director, Reha Waldblick"
+   }
+  }
+ ]
+}

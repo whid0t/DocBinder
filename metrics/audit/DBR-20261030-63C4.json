@@ -1,0 +1,84 @@
+[
+ {
+  "id": 66,
+  "request_id": "DBR-20261030-63C4",
+  "event_type": "request_confirmed",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{\"purpose_or_legal_basis\": \"transfer of patient\", \"reason\": \"Rehabilitation discharge report for continued treatment\"}",
+  "created_at": "2026-10-30T12:28:27+00:00",
+  "details": {
+   "purpose_or_legal_basis": "transfer of patient",
+   "reason": "Rehabilitation discharge report for continued treatment"
+  }
+ },
+ {
+  "id": 67,
+  "request_id": "DBR-20261030-63C4",
+  "event_type": "patient_matched",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:27+00:00",
+  "details": {}
+ },
+ {
+  "id": 68,
+  "request_id": "DBR-20261030-63C4",
+  "event_type": "request_sent",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{\"channel\": \"sms\", \"recipient\": \"Stefan Kern\"}",
+  "created_at": "2026-10-30T12:28:27+00:00",
+  "details": {
+   "channel": "sms",
+   "recipient": "Stefan Kern"
+  }
+ },
+ {
+  "id": 69,
+  "request_id": "DBR-20261030-63C4",
+  "event_type": "patient_notified",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:27+00:00",
+  "details": {}
+ },
+ {
+  "id": 70,
+  "request_id": "DBR-20261030-63C4",
+  "event_type": "identity_checked",
+  "actor_id": "stefan kern",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:28+00:00",
+  "details": {}
+ },
+ {
+  "id": 71,
+  "request_id": "DBR-20261030-63C4",
+  "event_type": "answer_sent",
+  "actor_id": "stefan kern",
+  "outcome": "success",
+  "details_json": "{\"batch_id\": \"b27e2196-fb2f-476a-adbe-12873bc37456\", \"documents\": 1}",
+  "created_at": "2026-10-30T12:28:28+00:00",
+  "details": {
+   "batch_id": "b27e2196-fb2f-476a-adbe-12873bc37456",
+   "documents": 1
+  }
+ },
+ {
+  "id": 72,
+  "request_id": "DBR-20261030-63C4",
+  "event_type": "answer_filed",
+  "actor_id": "docbinder-backend",
+  "outcome": "success",
+  "details_json": "{\"documents\": 1, \"resources\": 2}",
+  "created_at": "2026-10-30T12:28:28+00:00",
+  "details": {
+   "documents": 1,
+   "resources": 2
+  }
+ }
+]

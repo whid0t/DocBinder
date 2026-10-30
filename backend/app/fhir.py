@@ -7,6 +7,17 @@ import uuid
 from .parser import parse_author, parse_lab_rows, parse_lab_timestamps
 
 
+# Official LOINC display names, as reported by the HL7 validator. Coding.display must
+# match the code system exactly, so codes not listed here are filed without a display
+# and keep the lab's own wording in CodeableConcept.text.
+LOINC_DISPLAY = {
+    "6301-6": "INR in Platelet poor plasma by Coagulation assay",
+    "3255-7": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
+    "777-3": "Platelets [#/volume] in Blood by Automated count",
+    "14979-9": "aPTT in Platelet poor plasma by Coagulation assay",
+}
+
+
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
@@ -37,7 +48,7 @@ def build_lab_resources(
             "code": {"coding": [{
                 "system": "http://loinc.org",
                 "code": row["loinc"],
-                "display": row["name"],
+                **({"display": LOINC_DISPLAY[row["loinc"]]} if row["loinc"] in LOINC_DISPLAY else {}),
             }], "text": row["name"]},
             "subject": {"reference": f"Patient/{patient_id}"},
             "effectiveDateTime": effective,

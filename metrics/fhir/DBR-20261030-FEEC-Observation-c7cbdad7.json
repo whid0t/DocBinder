@@ -1,0 +1,47 @@
+{
+ "resourceType": "Observation",
+ "id": "c7cbdad7-8bbb-4438-9a3d-1680ba43ca35",
+ "status": "final",
+ "category": [
+  {
+   "coding": [
+    {
+     "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+     "code": "laboratory",
+     "display": "Laboratory"
+    }
+   ]
+  }
+ ],
+ "code": {
+  "coding": [
+   {
+    "system": "http://loinc.org",
+    "code": "3255-7",
+    "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay"
+   }
+  ],
+  "text": "Fibrinogen"
+ },
+ "subject": {
+  "reference": "Patient/maria-beispiel"
+ },
+ "effectiveDateTime": "2026-10-22T08:10:00+02:00",
+ "issued": "2026-10-22T11:40:00+02:00",
+ "performer": [
+  {
+   "display": "Dr. Eva Brandl, lab physician"
+  }
+ ],
+ "valueQuantity": {
+  "value": 3.1,
+  "unit": "g/L",
+  "system": "http://unitsofmeasure.org",
+  "code": "g/L"
+ },
+ "note": [
+  {
+   "text": "Reference range: 2.0 to 4.0"
+  }
+ ]
+}

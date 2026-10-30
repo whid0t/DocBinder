@@ -1,0 +1,4 @@
+To: +43 660 000 0101
+
+DocBinder request DBR-20261030-63C4: a healthcare professional has asked you to respond securely. Patient and document details are available only after identity verification.
+http://localhost:3000/invite/cEZPzEIHTeavuICyb7bq7fKWCIdWPHgXyzAg7NS4v9Y

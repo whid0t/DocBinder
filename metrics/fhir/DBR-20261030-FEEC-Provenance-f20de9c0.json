@@ -1,0 +1,62 @@
+{
+ "resourceType": "Provenance",
+ "id": "f20de9c0-0d1f-4755-95e7-6a023b6e6769",
+ "target": [
+  {
+   "reference": "Observation/354dab90-3cb7-4471-a57a-8a8705f97739"
+  },
+  {
+   "reference": "Observation/c28d01c3-d527-4abc-8298-4c47374a3f64"
+  },
+  {
+   "reference": "Observation/ebc0605a-3903-49cc-ab8b-f8c8ba310e83"
+  },
+  {
+   "reference": "Observation/c7cbdad7-8bbb-4438-9a3d-1680ba43ca35"
+  }
+ ],
+ "recorded": "2026-10-30T12:28:13+00:00",
+ "policy": [
+  "urn:docbinder:identity:simulated-name-match"
+ ],
+ "activity": {
+  "coding": [
+   {
+    "system": "http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+    "code": "CREATE"
+   }
+  ]
+ },
+ "agent": [
+  {
+   "type": {
+    "coding": [
+     {
+      "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+      "code": "enterer"
+     }
+    ]
+   },
+   "who": {
+    "identifier": {
+     "system": "urn:docbinder:simulated-name-match",
+     "value": "eva brandl"
+    },
+    "display": "Dr. Eva Brandl"
+   }
+  },
+  {
+   "type": {
+    "coding": [
+     {
+      "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+      "code": "author"
+     }
+    ]
+   },
+   "who": {
+    "display": "Dr. Eva Brandl, lab physician"
+   }
+  }
+ ]
+}

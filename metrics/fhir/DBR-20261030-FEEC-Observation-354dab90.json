@@ -1,0 +1,47 @@
+{
+ "resourceType": "Observation",
+ "id": "354dab90-3cb7-4471-a57a-8a8705f97739",
+ "status": "final",
+ "category": [
+  {
+   "coding": [
+    {
+     "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+     "code": "laboratory",
+     "display": "Laboratory"
+    }
+   ]
+  }
+ ],
+ "code": {
+  "coding": [
+   {
+    "system": "http://loinc.org",
+    "code": "6301-6",
+    "display": "INR in Platelet poor plasma by Coagulation assay"
+   }
+  ],
+  "text": "INR (prothrombin time)"
+ },
+ "subject": {
+  "reference": "Patient/maria-beispiel"
+ },
+ "effectiveDateTime": "2026-10-22T08:10:00+02:00",
+ "issued": "2026-10-22T11:40:00+02:00",
+ "performer": [
+  {
+   "display": "Dr. Eva Brandl, lab physician"
+  }
+ ],
+ "valueQuantity": {
+  "value": 1.0,
+  "unit": "1",
+  "system": "http://unitsofmeasure.org",
+  "code": "1"
+ },
+ "note": [
+  {
+   "text": "Reference range: 0.8 to 1.2"
+  }
+ ]
+}

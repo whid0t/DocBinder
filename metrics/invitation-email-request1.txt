@@ -1,0 +1,6 @@
+To: [{'Name': '', 'Address': 'eva.brandl@labor-kanal.example'}]
+Subject: Secure DocBinder request
+
+DocBinder request DBR-20261030-FEEC: a healthcare professional has asked you to respond securely. Patient and document details are available only after identity verification.
+
+Open securely: http://localhost:3000/invite/unBqrVQtGq-xNeL_8MIeMaa5s-JIkNLUDhcpDPl5Frg

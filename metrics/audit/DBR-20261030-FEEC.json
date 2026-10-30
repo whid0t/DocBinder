@@ -1,0 +1,94 @@
+[
+ {
+  "id": 58,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "request_confirmed",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{\"purpose_or_legal_basis\": \"necessary for treatment\", \"reason\": \"Latest blood clotting results before a planned procedure\"}",
+  "created_at": "2026-10-30T12:28:12+00:00",
+  "details": {
+   "purpose_or_legal_basis": "necessary for treatment",
+   "reason": "Latest blood clotting results before a planned procedure"
+  }
+ },
+ {
+  "id": 59,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "patient_matched",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:12+00:00",
+  "details": {}
+ },
+ {
+  "id": 60,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "request_sent",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{\"channel\": \"email\", \"recipient\": \"Dr. Eva Brandl\"}",
+  "created_at": "2026-10-30T12:28:12+00:00",
+  "details": {
+   "channel": "email",
+   "recipient": "Dr. Eva Brandl"
+  }
+ },
+ {
+  "id": 61,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "patient_notified",
+  "actor_id": "@lena.hofer:klinikum.example",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:12+00:00",
+  "details": {}
+ },
+ {
+  "id": 62,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "link_opened",
+  "actor_id": "unverified_recipient",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:13+00:00",
+  "details": {}
+ },
+ {
+  "id": 63,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "identity_checked",
+  "actor_id": "eva brandl",
+  "outcome": "success",
+  "details_json": "{}",
+  "created_at": "2026-10-30T12:28:13+00:00",
+  "details": {}
+ },
+ {
+  "id": 64,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "answer_sent",
+  "actor_id": "eva brandl",
+  "outcome": "success",
+  "details_json": "{\"batch_id\": \"0c6c9116-5fbf-48a5-a4ad-ba91926a37d5\", \"documents\": 1}",
+  "created_at": "2026-10-30T12:28:13+00:00",
+  "details": {
+   "batch_id": "0c6c9116-5fbf-48a5-a4ad-ba91926a37d5",
+   "documents": 1
+  }
+ },
+ {
+  "id": 65,
+  "request_id": "DBR-20261030-FEEC",
+  "event_type": "answer_filed",
+  "actor_id": "docbinder-backend",
+  "outcome": "success",
+  "details_json": "{\"documents\": 1, \"resources\": 5}",
+  "created_at": "2026-10-30T12:28:13+00:00",
+  "details": {
+   "documents": 1,
+   "resources": 5
+  }
+ }
+]

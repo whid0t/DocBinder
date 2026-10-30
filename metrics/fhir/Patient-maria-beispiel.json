@@ -1,0 +1,22 @@
+{
+ "resourceType": "Patient",
+ "id": "maria-beispiel",
+ "active": true,
+ "name": [
+  {
+   "use": "official",
+   "family": "Beispiel",
+   "given": [
+    "Maria"
+   ]
+  }
+ ],
+ "telecom": [
+  {
+   "system": "phone",
+   "value": "+43 660 000 0199",
+   "use": "mobile"
+  }
+ ],
+ "birthDate": "1961-03-12"
+}
