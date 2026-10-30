@@ -53,6 +53,8 @@ function Dashboard() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [patientName, setPatientName] = useState("");
+  const [patientBirthDate, setPatientBirthDate] = useState("");
 
   const refresh = async () => {
     const [reqs, notes] = await Promise.all([
@@ -192,14 +194,16 @@ function Invitation({ token }) {
       setVerification(data.verification_token);
       const request = await api(`/api/invitations/${token}/details`, { headers: { "X-Verification-Token": data.verification_token } });
       setDetails(request); setStage("submit");
+      setPatientName(details.patient_display);
+      setPatientBirthDate(details.patient_birth_date);
     } catch (err) { setError(err.message); }
   };
 
   const submit = async (event) => {
     event.preventDefault(); setError(""); setStage("processing");
     const data = new FormData();
-    data.append("patient_name", details.patient_display);
-    data.append("patient_birth_date", details.patient_birth_date);
+    data.append("patient_name", patientName);
+    data.append("patient_birth_date", patientBirthDate);
     data.append("markdown", markdown);
     if (file) data.append("file", file);
     try {
@@ -225,6 +229,22 @@ function Invitation({ token }) {
         {(stage === "submit" || stage === "processing") && details && <form onSubmit={submit}>
           <span className="eyebrow">Identity confirmed</span><h1>Submit requested document</h1>
           <div className="request-details"><div><small>Patient</small><strong>{details.patient_display}</strong><span>Born {details.patient_birth_date}</span></div><div><small>Requested document</small><strong>{details.document_type}</strong><span>From {details.requesting_clinician}</span></div></div>
+          <label>Patient full name
+            <input
+              type="text"
+              value={patientName}
+              onChange={(e) => setPatientName(e.target.value)}
+              required
+            />
+          </label>
+          <label>Patient birth date (YYYY-MM-DD)
+            <input
+              type="date"
+              value={patientBirthDate}
+              onChange={(e) => setPatientBirthDate(e.target.value)}
+              required
+            />
+          </label>
           <label>Upload Markdown file<input type="file" accept=".md,text/markdown" onChange={(e) => setFile(e.target.files[0])} /></label>
           <div className="divider"><span>or paste Markdown</span></div>
           <label>Markdown content<textarea rows="9" value={markdown} onChange={(e) => setMarkdown(e.target.value)} placeholder="# Report…" /></label>
