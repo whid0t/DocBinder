@@ -4,6 +4,10 @@ Doctors in a closed clinical network still request outside lab results and rehab
 
 The outside person needs no installation or new account. The demo uses synthetic data and simulated ID Austria name matching.
 
+## Demo
+
+https://github.com/user-attachments/assets/64072239-d03e-4392-9d7a-08d6179b9a53
+
 ## Start locally
 
 Requirements: Docker with Docker Compose.
@@ -90,4 +94,4 @@ Official validator evidence and reproduction instructions are in [metrics/](metr
 
 ## Demo scope
 
-This is a local synthetic-data prototype. The internal dashboard/API assumes a trusted clinic environment; it has no enforced login. Outside identity is simulated, and invitation links have no expiry (they are revocable, single-use after successful filing, and locked after five failed identity checks). Patient consent replies, real ID Austria, SMS delivery, HTTPS deployment, OCR and PDFs are not implemented. Matrix rooms are unencrypted for the demo.
+This is a local synthetic-data prototype. The internal dashboard/API assumes a trusted clinic environment; it has no enforced login. Outside identity is simulated, and invitation links have no expiry (they are revocable, single-use after successful filing, and locked after five failed identity checks). Patient consent replies, real ID Austria, and SMS delivery are not implemented. Matrix rooms are unencrypted for the demo.
