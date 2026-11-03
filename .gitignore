@@ -7,3 +7,4 @@ matrix/synapse/data/
 validator_cli.jar
 validation-output/
 .plans
+demo-data
