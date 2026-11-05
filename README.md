@@ -2,7 +2,7 @@
 
 Doctors in a closed clinical network still request outside lab results and rehabilitation reports by fax or email, then manually enter the answers. DocBinder connects that workflow: request a document through Matrix, let the outside professional answer in a browser, and file the result as FHIR R4 with provenance and an audit trail.
 
-The outside person needs no installation or new account. The demo uses synthetic data and simulated ID Austria name matching.
+The outside person needs no installation or new account. The demo uses synthetic data and simulated ID Austria name matching. The project was created for Track 2 from the AIM Hackathon 2026, Vienna.
 
 ## Demo
 
